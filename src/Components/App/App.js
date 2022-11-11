@@ -2,29 +2,23 @@ import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import heic2any from 'heic2any'
+import exifParser from 'exif-parser'
 import Header from '../Header'
 import Home from '../Home'
 import About from '../About'
 import UploadPhotos from '../UploadPhotos'
 
 export default function App() {
+
+	// const [photos, setPhotos] = useState(JSON.parse(localStorage.getItem('photos-list')))
+	// const [photoURLs, setPhotoURLS] = useState(JSON.parse(localStorage.getItem('urls-list')))
 	const [photos, setPhotos] = useState([])
 	const [photoURLs, setPhotoURLS] = useState([])
-	const [newPhotos, setNewPhotos] = useState(false)
 
 	useEffect(() => {
-		if (!photos.length) return
-		// const newPhotoURLs = photos.map(async photo => {
-		// 	const url = URL.createObjectURL(photo)
-		// 	if (photo.type === 'image/heic') {
-		// 		const photoData = await convertPhoto(url)
-		// 		console.log('photo data', photoData)
-		// 		return photoData
-		// 	}
-		// 	return url
-		// })
+		if (!photos || !photos.length) return
 		const newPhotoURLs = []
-		const doit = async () => {
+		const convertURLs = async () => {
 			for (const photo of photos) {
 				const url = URL.createObjectURL(photo)
 				if (photo.type === 'image/heic') {
@@ -32,16 +26,30 @@ export default function App() {
 					console.log('photo data', photoData)
 					newPhotoURLs.push(photoData)
 				} else {
+					const ab = await getArrayBuffer(url)
+					const parser = exifParser.create(ab)
+					const result = parser.parse()
+					console.log('result:', result)
 					newPhotoURLs.push(url)
 				}
 			}
 			setPhotoURLS(newPhotoURLs)
 		}
-		doit()
+		convertURLs()
+		// localStorage.setItem('urls-list', JSON.stringify(photoURLs))
+		// localStorage.setItem('photos-list', JSON.stringify(photos))
 	}, [photos])
+
+
 
 	const selectNewPhotos = (e) => {
 		setPhotos([...e.target.files])
+	}
+
+	const getArrayBuffer = async (url) => {
+		const res = await fetch(url)
+		const blob = await res.blob()
+		return await blob.arrayBuffer()
 	}
 
 	const convertPhoto = async (url) => {
@@ -51,12 +59,12 @@ export default function App() {
 		return await blobToBase64(convertedBlob)
 	}
 
-	async function blobToBase64(blob) {
+	const blobToBase64 = async (blob) => {
 		return new Promise((resolve, _) => {
 			const reader = new FileReader()
 			reader.onloadend = () => resolve(reader.result)
 			reader.readAsDataURL(blob)
-		});
+		})
 	}
 
 	return (

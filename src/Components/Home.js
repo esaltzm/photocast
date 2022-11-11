@@ -3,6 +3,7 @@ import Photo from './Photo'
 
 export default function Home({photoURLs}) {
     return (
+        photoURLs &&
         <div>
             {photoURLs.map(url => <Photo url={url}/>)}
         </div>
