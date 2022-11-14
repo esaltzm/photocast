@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Photo from './Photo'
+import Map from './Map'
 
 export default function Home({ photoURLs, setPhotoURLS, noData }) {
     const [param, setParam] = useState('Altitude (ft)')
@@ -38,6 +39,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData }) {
                 <option value='lowest'>Low to high</option>
             </select>
             <div className='noData'>{noData} of your photos were excluded for insufficient EXIF data</div>
+            <Map center={{lat:38.74,lng:-106.41}} zoom={8} photoURLs={photoURLs}/>
             <div className='photosContainer'>
                 {photoURLs.map(img => <Photo url={img.url} data={img.data} key={img.url} />)}
             </div>

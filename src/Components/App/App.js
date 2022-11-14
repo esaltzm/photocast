@@ -74,7 +74,6 @@ export default function App() {
 		const url = `http://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
 		try {
 			const res = await axios.get(url)
-			// if(res.headers.status === '')
 			weather = res.data['forecast']['forecastday'][0]['hour']
 			return weather
 		} catch (err) {
