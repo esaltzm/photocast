@@ -23,14 +23,17 @@ export default function App() {
 				const url = URL.createObjectURL(photo)
 				if (photo.type === 'image/heic') {
 					const photoData = await convertPhoto(url)
-					console.log('photo data', photoData)
-					newPhotoURLs.push(photoData)
+					const exif = await getEXIF(url)
+					newPhotoURLs.push({
+						url: photoData,
+						data: exif
+					})
 				} else {
-					const ab = await getArrayBuffer(url)
-					const parser = exifParser.create(ab)
-					const result = parser.parse()
-					console.log('result:', result)
-					newPhotoURLs.push(url)
+					const exif = await getEXIF(url)
+					newPhotoURLs.push({
+						url: url,
+						data: exif
+					})
 				}
 			}
 			setPhotoURLS(newPhotoURLs)
@@ -50,6 +53,14 @@ export default function App() {
 		const res = await fetch(url)
 		const blob = await res.blob()
 		return await blob.arrayBuffer()
+	}
+
+	const getEXIF = async (url) => {
+		const res = await fetch(url)
+		const blob = await res.blob()
+		const ab = await blob.arrayBuffer()
+		const parser = exifParser.create(ab)
+		return parser.parse()
 	}
 
 	const convertPhoto = async (url) => {

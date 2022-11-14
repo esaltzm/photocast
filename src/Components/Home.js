@@ -5,7 +5,7 @@ export default function Home({photoURLs}) {
     return (
         photoURLs &&
         <div>
-            {photoURLs.map(url => <Photo url={url}/>)}
+            {photoURLs.map(img => <Photo url={img.url} data={img.data['tags']}/>)}
         </div>
     )
 }
