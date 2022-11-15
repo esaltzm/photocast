@@ -8,10 +8,18 @@
 }
 
 .pin {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: red;
-  -webkit-text-stroke: 2px black;
 }
+
+/* .pin-hover {
+  height: 90px;
+  background-color: red;
+  border: solid red 5px;
+  line-height: 90px;
+  align-items:center;
+  justify-content: center;
+} */
 
 .pin:hover {
   cursor: pointer;
@@ -49,3 +57,4 @@
   overflow-x: auto;
   overflow-y: hidden;
 }
+
