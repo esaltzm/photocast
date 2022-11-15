@@ -12,3 +12,40 @@
   color: red;
   -webkit-text-stroke: 2px black;
 }
+
+.pin:hover {
+  cursor: pointer;
+}
+
+.photo-info {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 75%;
+  background-color: white;
+  z-index: 2;
+}
+
+.modal-background {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.photo:hover {
+  cursor: pointer;
+}
+
+.photos-container {
+  height: 180px;
+  width: 80%;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}

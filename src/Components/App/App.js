@@ -14,8 +14,21 @@ export default function App() {
 	const [photoFiles, setPhotoFiles] = useState([])
 	const [photoURLs, setPhotoURLS] = useState([])
 	const [noData, setNoData] = useState(0) // number of photos without sufficient exif data
+	const [photoInfo, setPhotoInfo] = useState(false)
 
 	useEffect(() => {
+		const getWeather = async (lat, long, date) => {
+			let weather
+			const url = `http://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
+			try {
+				const res = await axios.get(url)
+				weather = res.data['forecast']['forecastday'][0]['hour']
+				return weather
+			} catch (err) {
+				setNoData(noData + 1)
+				console.error('nodata: ', noData)
+			}
+		}
 		if (!photoFiles || !photoFiles.length) return
 		const newPhotoURLs = []
 		const getDataURLs = async () => {
@@ -51,12 +64,13 @@ export default function App() {
 					data = undefined
 				}
 				if (photo.type === 'image/heic') {
-					const photoData = await convertPhoto(url)
-					const exif = await getEXIF(url)
-					newPhotoURLs.push({
-						url: photoData,
-						data: data
-					})
+					// const photoData = await convertPhoto(url)
+					// const exif = await getEXIF(url)
+					// newPhotoURLs.push({
+					// 	url: photoData,
+					// 	data: data
+					// })
+					console.log('heic')
 				} else {
 					if(data) newPhotoURLs.push({ // only render photos with sufficient exif data
 						url: url,
@@ -68,19 +82,6 @@ export default function App() {
 		}
 		getDataURLs()
 	}, [photoFiles])
-
-	const getWeather = async (lat, long, date) => {
-		let weather
-		const url = `http://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
-		try {
-			const res = await axios.get(url)
-			weather = res.data['forecast']['forecastday'][0]['hour']
-			return weather
-		} catch (err) {
-			setNoData(noData + 1)
-			console.error('nodata: ', noData)
-		}
-	}
 
 	const getFormattedDate = (date) => {
 		const year = date.getFullYear()
@@ -124,7 +125,7 @@ export default function App() {
 		<div className='App'>
 			<Header />
 			<Routes>
-				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData}/>} />
+				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo}/>} />
 				<Route path='/about' element={<About />} />
 				<Route path='/upload-photos' element={<UploadPhotos setPhotoFiles={setPhotoFiles}/>} />
 			</Routes>
