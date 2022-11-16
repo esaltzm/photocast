@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ProgressBar from "@ramonak/react-progress-bar"
 import Map from './Map'
 import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
@@ -7,6 +8,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     const [param, setParam] = useState('Altitude (ft)')
     const [dir, setDir] = useState('highest')
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
+    const [progress,setProgress] = useState(0)
 
     useEffect(() => {
         const sortPhotos = (param, direction) => {
@@ -31,8 +33,9 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
 
     return (
         <div className='home'>
-            {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo}/>}
-            <h4>Loaded {loaded} of {photoFiles.length} photos</h4>
+            {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
+            <h4>Loaded {loaded} of {photoFiles.length - noData} photos</h4>
+            <ProgressBar className='progress-bar' completed={loaded / (photoFiles.length - noData) * 100} customLabel={' '}/>
             <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
                 <option value='default' disabled>Choose a parameter!</option>
                 {params.map(param => <option value={param} key={param}>{param}</option>)}
