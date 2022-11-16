@@ -1,12 +1,17 @@
 // TO DO
 // - Fix date/time
-// - Check that hour filter selects correct hour
+// - Check that hour filter selects correct hour ✓
 // - Fix noData counter
+// - add loading screen while parsing photos
+// - adjust temperature based on altitude
 // - add landing page directing user to upload photos (conditional rendering in home element)
 // - style
 // - about page
 // - add drag and drop for files
 // - prevent map pins from getting stuck on hover
+// - conditional styling of photos in photoinfobox based on dimensions
+// - update readme
+// - make information flow diagram
 
 import './App.css'
 import React, { useState, useEffect } from 'react'
@@ -54,12 +59,11 @@ export default function App() {
 				const weather = await getWeather(lat, long, formattedDate)
 				let data = undefined
 				if (weather) {
-					const weatherHour = weather.filter((hour, i) => {
-						if (i !== weather.length - 1) {
-							return hour['time_epoch'] < millis && weather[i + 1]['time_epoch'] > millis
-						} else return true
-					})[0]
-					// ^ check if this is working ^
+					const weatherLat = weather['location']['lat']
+					const weatherLong = weather['location']['lon']
+					const weatherAlt = await getAlt(weatherLat, weatherLong)
+					const i = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
+					const weatherHour = weather[i]
 					data = {
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
 						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
