@@ -8,7 +8,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     const [param, setParam] = useState('Altitude (ft)')
     const [dir, setDir] = useState('highest')
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
-    const [progress,setProgress] = useState(0)
+    const [progress, setProgress] = useState(0)
 
     useEffect(() => {
         const sortPhotos = (param, direction) => {
@@ -33,18 +33,25 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
 
     return (
         <div className='home'>
-            {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
-            <h4>Loaded {loaded} of {photoFiles.length - noData} photos</h4>
-            <ProgressBar className='progress-bar' completed={loaded / (photoFiles.length - noData) * 100} customLabel={' '}/>
-            <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
-                <option value='default' disabled>Choose a parameter!</option>
-                {params.map(param => <option value={param} key={param}>{param}</option>)}
-            </select>
-            <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
-                <option value='highest'>High to low</option>
-                <option value='lowest'>Low to high</option>
-            </select>
-            <div className='noData'>{noData} of your photos were excluded for insufficient EXIF data</div>
+            <div className='info-header'>
+                {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
+                <p>Loaded {loaded} of {photoFiles.length - noData} photos, {noData} were excluded for lack of EXIF data</p>
+                <ProgressBar
+                    completed={loaded / (photoFiles.length - noData) * 100}
+                    customLabel={' '}
+                    bgColor={'forestgreen'}
+                    width={'33%'}
+                    margin={'0 auto'}
+                />
+                <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
+                    <option value='default' disabled>Choose a parameter!</option>
+                    {params.map(param => <option value={param} key={param}>{param}</option>)}
+                </select>
+                <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
+                    <option value='highest'>High to low</option>
+                    <option value='lowest'>Low to high</option>
+                </select>
+            </div>
             <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
             <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
         </div>

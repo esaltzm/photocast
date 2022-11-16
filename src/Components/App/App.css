@@ -9,7 +9,7 @@
 
 .pin {
   font-size: 1.5rem;
-  color: red;
+  color: forestgreen;
 }
 
 /* .pin-hover {
@@ -69,4 +69,8 @@ select:hover {
 
 .close-icon:hover {
   cursor: pointer;
+}
+
+.info-header {
+  align-items: center;
 }
