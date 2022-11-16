@@ -91,3 +91,13 @@ select:hover {
 .home-link:visited {
   color: white;
 }
+
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
