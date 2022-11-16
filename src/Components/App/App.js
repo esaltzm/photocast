@@ -82,12 +82,11 @@ export default function App() {
 						vis: weatherHour['vis_miles']
 					}
 				}
-				if (data) newPhotoURLs.push({ // only render photos with sufficient exif data
+				if (data) setPhotoURLS(photoURLs => [...photoURLs,{
 					url: url,
 					data: data
-				})
+				}])
 			}
-			setPhotoURLS(newPhotoURLs)
 		}
 		getDataURLs()
 	}, [photoFiles])
