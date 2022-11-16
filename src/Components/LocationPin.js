@@ -8,7 +8,7 @@ export default function LocationPin({ photo, setPhotoInfo }) {
             {isHovering ?
                 <div
                     className='pin-hover'
-                    onMouseOut={() => { setIsHovering(false) }}
+                    onMouseOut={() => { setIsHovering(!isHovering) }}
                     onClick={() => { setPhotoInfo(photo) }}
                 >
                     <img
@@ -22,7 +22,7 @@ export default function LocationPin({ photo, setPhotoInfo }) {
                         icon={'material-symbols:image'}
                         className='pin-icon'
                         onClick={() => { setPhotoInfo(photo) }}
-                        onMouseOver={() => { setIsHovering(true) }}
+                        onMouseOver={() => { setIsHovering(!isHovering) }}
                     />
                 </div>
             }

@@ -7,6 +7,7 @@
 // - add landing page directing user to upload photos (conditional rendering in home element)
 // - style
 // - about page
+// - explain no exif data in about page, add link in noData counter => what does this mean?
 // - add drag and drop for files
 // - prevent map pins from getting stuck on hover
 // - conditional styling of photos in photoinfobox based on dimensions
@@ -36,14 +37,9 @@ export default function App() {
 		const getWeather = async (lat, long, date) => {
 			let weather
 			const url = `http://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
-			try {
-				const res = await axios.get(url)
-				weather = res.data['forecast']['forecastday'][0]['hour']
-				return weather
-			} catch (err) {
-				setNoData(noData + 1)
-				console.error('nodata: ', noData)
-			}
+			const res = await axios.get(url)
+			weather = res.data['forecast']['forecastday'][0]['hour']
+			return weather
 		}
 		// const getAlt = async (lat, long) => {
 		// 	const url = `https://maps.googleapis.com/maps/api/elevation/json?locations=${lat}%2C${long}&key=${process.env.REACT_APP_GOOGLE_KEY}`
@@ -62,10 +58,11 @@ export default function App() {
 				const millis = exif['tags']['DateTimeOriginal'] * 1000
 				const date = new Date(millis)
 				const formattedDate = getFormattedDate(date)
-				const weather = await getWeather(lat, long, formattedDate)
-				let data = undefined
+				let weather, data
+				lat && long && formattedDate ?
+					weather = await getWeather(lat, long, formattedDate) :
+					setNoData(noData => noData + 1)
 				if (weather) {
-					console.log(weather)
 					// const weatherLat = 45
 					// const weatherLong = -120
 					// const weatherAlt = await getAlt(weatherLat, weatherLong)
