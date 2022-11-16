@@ -1,6 +1,5 @@
 // TO DO
 // - Fix date/time
-// - add loading screen while parsing photos
 // - adjust temperature based on altitude
 // - add landing page directing user to upload photos (conditional rendering in home element)
 // - style
@@ -67,6 +66,7 @@ export default function App() {
 					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
 					const weatherHour = weather[index]
 					data = {
+						millis: millis,
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
 						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
 						lat: lat,

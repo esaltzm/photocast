@@ -5,7 +5,7 @@ import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
 
 export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo, photoFiles }) {
-    const [param, setParam] = useState('Altitude (ft)')
+    const [param, setParam] = useState('millis')
     const [dir, setDir] = useState('highest')
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
     const [progress, setProgress] = useState(0)
@@ -30,6 +30,15 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
         }
         sortPhotos(param, dir)
     }, [param, dir])
+
+    useEffect(() => {
+        let sortedPhotos
+        const sortPhotos = () => {
+            sortedPhotos = photoURLs.sort((a, b) => a.data.millis - b.data.millis)
+            setPhotoURLS([...sortedPhotos])
+        }
+        sortPhotos()
+    }, [])
 
     return (
         <div className='home'>
