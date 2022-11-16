@@ -1,6 +1,5 @@
 // TO DO
 // - Fix date/time
-// - adjust temperature based on altitude
 // - add landing page directing user to upload photos (conditional rendering in home element)
 // - style
 // - about page
@@ -26,7 +25,7 @@ export default function App() {
 
 	const [photoFiles, setPhotoFiles] = useState([])
 	const [photoURLs, setPhotoURLS] = useState([])
-	const [noData, setNoData] = useState(0) // number of photos without sufficient exif data
+	const [noData, setNoData] = useState(0)
 	const [photoInfo, setPhotoInfo] = useState(false)
 
 	useEffect(() => {
@@ -37,11 +36,6 @@ export default function App() {
 			weather = res.data['forecast']['forecastday'][0]['hour']
 			return weather
 		}
-		// const getAlt = async (lat, long) => {
-		// 	const url = `https://maps.googleapis.com/maps/api/elevation/json?locations=${lat}%2C${long}&key=${process.env.REACT_APP_GOOGLE_KEY}`
-		// 	const res = await axios.get(url)
-		// 	return res['results'][0]['elevation'] * 3.28084
-		// }
 
 		if (!photoFiles || !photoFiles.length) return
 		const newPhotoURLs = []
@@ -59,10 +53,6 @@ export default function App() {
 					weather = await getWeather(lat, long, formattedDate) :
 					setNoData(noData => noData + 1)
 				if (weather) {
-					// const weatherLat = 45
-					// const weatherLong = -120
-					// const weatherAlt = await getAlt(weatherLat, weatherLong)
-					// const altTempDiff = weatherAlt - exif['tags']['GPSAltitude'] * 3.28084 / 1000 * 5.4
 					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
 					const weatherHour = weather[index]
 					data = {
@@ -72,8 +62,8 @@ export default function App() {
 						lat: lat,
 						long: long,
 						alt: Math.floor(exif['tags']['GPSAltitude'] * 3.28084),
-						temp: weatherHour['temp_f'], // + altTempDiff,
-						windchill: weatherHour['windchill_f'], // + altTempDiff
+						temp: weatherHour['temp_f'],
+						windchill: weatherHour['windchill_f'],
 						precip: weatherHour['precip_in'],
 						humidity: weatherHour['humidity'],
 						gust: weatherHour['gust_mph'],
@@ -117,5 +107,3 @@ export default function App() {
 		</div>
 	)
 }
-
-// Source https://medium.com/geekculture/how-to-upload-and-preview-images-in-react-js-4e22a903f3db

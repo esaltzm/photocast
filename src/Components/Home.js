@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import ProgressBar from "@ramonak/react-progress-bar"
 import Map from './Map'
 import PhotosContainer from './PhotosContainer'
@@ -42,28 +43,38 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
 
     return (
         <div className='home'>
-            <div className='info-header'>
-                {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
-                <p>Loaded {photoURLs.length} of {photoFiles.length - noData} photos, {noData} were excluded for lack of EXIF data</p>
-                {photoURLs.length / (photoFiles.length - noData) < 1 &&
-                <ProgressBar
-                    completed={photoURLs.length / (photoFiles.length - noData) * 100}
-                    customLabel={' '}
-                    bgColor={'forestgreen'}
-                    width={'33%'}
-                    margin={'0 auto'}
-                />}
-                <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
-                    <option value='default' disabled>Choose a parameter!</option>
-                    {params.map(param => <option value={param} key={param}>{param}</option>)}
-                </select>
-                <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
-                    <option value='highest'>High to low</option>
-                    <option value='lowest'>Low to high</option>
-                </select>
-            </div>
-            <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
-            <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
+            {photoFiles.length ?
+                <div className='home-after'>
+                    <div className='info-header'>
+                        {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
+                        <p>Loaded {photoURLs.length} of {photoFiles.length - noData} photos, {noData} were excluded for lack of EXIF data</p>
+                        {photoURLs.length / (photoFiles.length - noData) < 1 &&
+                            <ProgressBar
+                                completed={photoURLs.length / (photoFiles.length - noData) * 100}
+                                customLabel={' '}
+                                bgColor={'forestgreen'}
+                                width={'33%'}
+                                margin={'0 auto'}
+                            />}
+                        <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
+                            <option value='default' disabled>Choose a parameter!</option>
+                            {params.map(param => <option value={param} key={param}>{param}</option>)}
+                        </select>
+                        <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
+                            <option value='highest'>High to low</option>
+                            <option value='lowest'>Low to high</option>
+                        </select>
+                    </div>
+                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
+                    <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
+                </div> :
+                <div className='home-before'>
+                    <img src='/default.jpg' alt='a stormy landscape' style={{ width: '60%' }} />
+                    <div className='home-link-div'>{'to get started... '}
+                        <Link className='home-link' to='/upload-photos'>upload some photos</Link>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

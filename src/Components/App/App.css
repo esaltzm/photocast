@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .google-map {
@@ -73,4 +74,20 @@ select:hover {
 
 .info-header {
   align-items: center;
+}
+
+.home-before {
+  text-align: center;
+  margin: 0 auto;
+  color: white
+}
+
+.home-link-div {
+  position: absolute;
+  top: 31%;
+  left: 60%;
+}
+
+.home-link:visited {
+  color: white;
 }
