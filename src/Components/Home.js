@@ -4,7 +4,7 @@ import Map from './Map'
 import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
 
-export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo, photoFiles, loaded }) {
+export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo, photoFiles }) {
     const [param, setParam] = useState('Altitude (ft)')
     const [dir, setDir] = useState('highest')
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
@@ -35,14 +35,15 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
         <div className='home'>
             <div className='info-header'>
                 {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo} />}
-                <p>Loaded {loaded} of {photoFiles.length - noData} photos, {noData} were excluded for lack of EXIF data</p>
+                <p>Loaded {photoURLs.length} of {photoFiles.length - noData} photos, {noData} were excluded for lack of EXIF data</p>
+                {photoURLs.length / (photoFiles.length - noData) < 1 &&
                 <ProgressBar
-                    completed={loaded / (photoFiles.length - noData) * 100}
+                    completed={photoURLs.length / (photoFiles.length - noData) * 100}
                     customLabel={' '}
                     bgColor={'forestgreen'}
                     width={'33%'}
                     margin={'0 auto'}
-                />
+                />}
                 <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
                     <option value='default' disabled>Choose a parameter!</option>
                     {params.map(param => <option value={param} key={param}>{param}</option>)}

@@ -29,7 +29,6 @@ export default function App() {
 	const [photoURLs, setPhotoURLS] = useState([])
 	const [noData, setNoData] = useState(0) // number of photos without sufficient exif data
 	const [photoInfo, setPhotoInfo] = useState(false)
-	const [loaded, setLoaded] = useState(0)
 
 	useEffect(() => {
 		const getWeather = async (lat, long, date) => {
@@ -65,7 +64,6 @@ export default function App() {
 					// const weatherLong = -120
 					// const weatherAlt = await getAlt(weatherLat, weatherLong)
 					// const altTempDiff = weatherAlt - exif['tags']['GPSAltitude'] * 3.28084 / 1000 * 5.4
-					setLoaded(loaded => loaded + 1)
 					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
 					const weatherHour = weather[index]
 					data = {
@@ -112,7 +110,7 @@ export default function App() {
 		<div className='App'>
 			<Header />
 			<Routes>
-				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} photoFiles={photoFiles} loaded={loaded}/>} />
+				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} photoFiles={photoFiles} />} />
 				<Route path='/about' element={<About />} />
 				<Route path='/upload-photos' element={<UploadPhotos setPhotoFiles={setPhotoFiles} />} />
 			</Routes>
