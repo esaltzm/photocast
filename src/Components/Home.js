@@ -3,7 +3,7 @@ import Map from './Map'
 import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
 
-export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo }) {
+export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo, photoFiles, loaded }) {
     const [param, setParam] = useState('Altitude (ft)')
     const [dir, setDir] = useState('highest')
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
@@ -32,6 +32,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     return (
         <div className='home'>
             {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo}/>}
+            <h4>Loaded {loaded} of {photoFiles.length} photos</h4>
             <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
                 <option value='default' disabled>Choose a parameter!</option>
                 {params.map(param => <option value={param} key={param}>{param}</option>)}

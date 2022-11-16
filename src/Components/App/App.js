@@ -1,7 +1,5 @@
 // TO DO
 // - Fix date/time
-// - Check that hour filter selects correct hour ✓
-// - Fix noData counter
 // - add loading screen while parsing photos
 // - adjust temperature based on altitude
 // - add landing page directing user to upload photos (conditional rendering in home element)
@@ -17,14 +15,13 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import heic2any from 'heic2any'
 import exifParser from 'exif-parser'
+import tzlookup from 'tz-lookup'
 import axios from 'axios'
 import Header from '../Header'
 import Home from '../Home'
 import About from '../About'
 import UploadPhotos from '../UploadPhotos'
-import tzlookup from 'tz-lookup'
 
 export default function App() {
 
@@ -32,6 +29,7 @@ export default function App() {
 	const [photoURLs, setPhotoURLS] = useState([])
 	const [noData, setNoData] = useState(0) // number of photos without sufficient exif data
 	const [photoInfo, setPhotoInfo] = useState(false)
+	const [loaded, setLoaded] = useState(0)
 
 	useEffect(() => {
 		const getWeather = async (lat, long, date) => {
@@ -67,6 +65,7 @@ export default function App() {
 					// const weatherLong = -120
 					// const weatherAlt = await getAlt(weatherLat, weatherLong)
 					// const altTempDiff = weatherAlt - exif['tags']['GPSAltitude'] * 3.28084 / 1000 * 5.4
+					setLoaded(loaded => loaded + 1)
 					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
 					const weatherHour = weather[index]
 					data = {
@@ -114,7 +113,7 @@ export default function App() {
 		<div className='App'>
 			<Header />
 			<Routes>
-				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />} />
+				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} photoFiles={photoFiles} loaded={loaded}/>} />
 				<Route path='/about' element={<About />} />
 				<Route path='/upload-photos' element={<UploadPhotos setPhotoFiles={setPhotoFiles} />} />
 			</Routes>
