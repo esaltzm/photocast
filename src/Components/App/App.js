@@ -45,6 +45,12 @@ export default function App() {
 				console.error('nodata: ', noData)
 			}
 		}
+		// const getAlt = async (lat, long) => {
+		// 	const url = `https://maps.googleapis.com/maps/api/elevation/json?locations=${lat}%2C${long}&key=${process.env.REACT_APP_GOOGLE_KEY}`
+		// 	const res = await axios.get(url)
+		// 	return res['results'][0]['elevation'] * 3.28084
+		// }
+
 		if (!photoFiles || !photoFiles.length) return
 		const newPhotoURLs = []
 		const getDataURLs = async () => {
@@ -59,19 +65,21 @@ export default function App() {
 				const weather = await getWeather(lat, long, formattedDate)
 				let data = undefined
 				if (weather) {
-					const weatherLat = weather['location']['lat']
-					const weatherLong = weather['location']['lon']
-					const weatherAlt = await getAlt(weatherLat, weatherLong)
-					const i = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
-					const weatherHour = weather[i]
+					console.log(weather)
+					// const weatherLat = 45
+					// const weatherLong = -120
+					// const weatherAlt = await getAlt(weatherLat, weatherLong)
+					// const altTempDiff = weatherAlt - exif['tags']['GPSAltitude'] * 3.28084 / 1000 * 5.4
+					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
+					const weatherHour = weather[index]
 					data = {
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
 						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
 						lat: lat,
 						long: long,
 						alt: Math.floor(exif['tags']['GPSAltitude'] * 3.28084),
-						temp: weatherHour['temp_f'],
-						windchill: weatherHour['windchill_f'],
+						temp: weatherHour['temp_f'], // + altTempDiff,
+						windchill: weatherHour['windchill_f'], // + altTempDiff
 						precip: weatherHour['precip_in'],
 						humidity: weatherHour['humidity'],
 						gust: weatherHour['gust_mph'],
