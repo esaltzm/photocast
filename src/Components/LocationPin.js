@@ -6,8 +6,16 @@ export default function LocationPin({ photo, setPhotoInfo }) {
     return (
         <div>
             {isHovering ?
-                <div className='pin-hover' onMouseOut={() => { setIsHovering(false) }} onClick={() => { setPhotoInfo(photo) }}>
-                    <img src={photo.url} style={{height:'90px', border:'solid red 4px', borderRadius:'3px'}}/>
+                <div
+                    className='pin-hover'
+                    onMouseOut={() => { setIsHovering(false) }}
+                    onClick={() => { setPhotoInfo(photo) }}
+                >
+                    <img
+                        src={photo.url}
+                        style={{ height: '90px', border: 'solid red 4px', borderRadius: '3px', zIndex:'2' }}
+                        alt={'photo on' + photo.data.date}
+                    />
                 </div> :
                 <div className='pin'>
                     <Icon

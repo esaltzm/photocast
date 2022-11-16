@@ -1,3 +1,13 @@
+// TO DO
+// - Fix date/time
+// - Check that hour filter selects correct hour
+// - Fix noData counter
+// - add landing page directing user to upload photos (conditional rendering in home element)
+// - style
+// - about page
+// - add drag and drop for files
+// - prevent map pins from getting stuck on hover
+
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
@@ -8,6 +18,7 @@ import Header from '../Header'
 import Home from '../Home'
 import About from '../About'
 import UploadPhotos from '../UploadPhotos'
+import tzlookup from 'tz-lookup'
 
 export default function App() {
 
@@ -38,10 +49,11 @@ export default function App() {
 				const lat = exif['tags']['GPSLatitude']
 				const long = exif['tags']['GPSLongitude']
 				const millis = exif['tags']['DateTimeOriginal'] * 1000
-				const formattedDate = getFormattedDate(new Date(millis))
+				const date = new Date(millis)
+				const formattedDate = getFormattedDate(date)
 				const weather = await getWeather(lat, long, formattedDate)
-				let data
-				if(weather) {
+				let data = undefined
+				if (weather) {
 					const weatherHour = weather.filter((hour, i) => {
 						if (i !== weather.length - 1) {
 							return hour['time_epoch'] < millis && weather[i + 1]['time_epoch'] > millis
@@ -49,7 +61,8 @@ export default function App() {
 					})[0]
 					// ^ check if this is working ^
 					data = {
-						date: formattedDate,
+						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
+						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
 						lat: lat,
 						long: long,
 						alt: Math.floor(exif['tags']['GPSAltitude'] * 3.28084),
@@ -60,23 +73,11 @@ export default function App() {
 						gust: weatherHour['gust_mph'],
 						vis: weatherHour['vis_miles']
 					}
-				} else {
-					data = undefined
 				}
-				if (photo.type === 'image/heic') {
-					// const photoData = await convertPhoto(url)
-					// const exif = await getEXIF(url)
-					// newPhotoURLs.push({
-					// 	url: photoData,
-					// 	data: data
-					// })
-					console.log('heic')
-				} else {
-					if(data) newPhotoURLs.push({ // only render photos with sufficient exif data
-						url: url,
-						data: data
-					})
-				}
+				if (data) newPhotoURLs.push({ // only render photos with sufficient exif data
+					url: url,
+					data: data
+				})
 			}
 			setPhotoURLS(newPhotoURLs)
 		}
@@ -92,12 +93,6 @@ export default function App() {
 		return year + ' ' + month + ' ' + day
 	}
 
-	const getArrayBuffer = async (url) => {
-		const res = await fetch(url)
-		const blob = await res.blob()
-		return await blob.arrayBuffer()
-	}
-
 	const getEXIF = async (url) => {
 		const res = await fetch(url)
 		const blob = await res.blob()
@@ -106,28 +101,13 @@ export default function App() {
 		return parser.parse()
 	}
 
-	const convertPhoto = async (url) => {
-		const res = await fetch(url)
-		const blob = await res.blob()
-		const convertedBlob = await heic2any({ blob })
-		return await blobToBase64(convertedBlob)
-	}
-
-	const blobToBase64 = async (blob) => {
-		return new Promise((resolve, _) => {
-			const reader = new FileReader()
-			reader.onloadend = () => resolve(reader.result)
-			reader.readAsDataURL(blob)
-		})
-	}
-
 	return (
 		<div className='App'>
 			<Header />
 			<Routes>
-				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo}/>} />
+				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />} />
 				<Route path='/about' element={<About />} />
-				<Route path='/upload-photos' element={<UploadPhotos setPhotoFiles={setPhotoFiles}/>} />
+				<Route path='/upload-photos' element={<UploadPhotos setPhotoFiles={setPhotoFiles} />} />
 			</Routes>
 		</div>
 	)

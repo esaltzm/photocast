@@ -32,11 +32,11 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     return (
         <div className='home'>
             {photoInfo && <PhotoInfoBox photo={photoInfo} setPhotoInfo={setPhotoInfo}/>}
-            <select defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
+            <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
                 <option value='default' disabled>Choose a parameter!</option>
                 {params.map(param => <option value={param} key={param}>{param}</option>)}
             </select>
-            <select defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
+            <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
                 <option value='highest'>High to low</option>
                 <option value='lowest'>Low to high</option>
             </select>

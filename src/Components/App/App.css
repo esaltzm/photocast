@@ -21,17 +21,21 @@
   justify-content: center;
 } */
 
-.pin:hover {
+.pin-hover {
+  cursor: pointer;
+}
+
+select:hover {
   cursor: pointer;
 }
 
 .photo-info {
-  position: absolute;
-  top: 50px;
-  right: 50px;
   width: 75%;
+  height: 66%;
   background-color: white;
   z-index: 2;
+  margin: 0 auto;
+  margin-top: 10%;
 }
 
 .modal-background {
@@ -58,3 +62,11 @@
   overflow-y: hidden;
 }
 
+.close-icon {
+  float:right;
+  margin: 10px;
+}
+
+.close-icon:hover {
+  cursor: pointer;
+}
