@@ -39,7 +39,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
             setPhotoURLS([...sortedPhotos])
         }
         sortPhotos()
-    }, [])
+    }, [photoURLs.length])
 
     return (
         <div className='home'>
