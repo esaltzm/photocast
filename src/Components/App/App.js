@@ -1,6 +1,6 @@
 // TO DO
 // - Fix date/time
-// - add landing page directing user to upload photos (conditional rendering in home element)
+// - Gradient of pin colors
 // - style
 // - about page
 // - explain no exif data in about page, add link in noData counter => what does this mean?
