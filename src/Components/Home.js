@@ -81,7 +81,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                             <option value='lowest'>Low to high</option>
                         </select>
                     </div>
-                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} colors={colors} hoverPhoto={hoverPhoto}/>
+                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} colors={colors} hoverPhoto={hoverPhoto} param={param} paramKeys={paramKeys}/>
                     <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} setHoverPhoto={setHoverPhoto}/>
                 </div> :
                 <div className='home-before'>

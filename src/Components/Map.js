@@ -2,12 +2,16 @@ import React from 'react'
 import LocationPin from './LocationPin'
 import GoogleMapReact from 'google-map-react'
 
-
-// for later https://stackoverflow.com/questions/61868955/how-to-set-center-and-zoom-of-google-map-to-cover-all-markers-generated-from-wor
-export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hoverPhoto}) {
+export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hoverPhoto, param, paramKeys}) {
     return (
-        <div className="map">
-            <div className="google-map">
+        <div className='map'>
+            <div className='key'>
+                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[0].color})`}}></div>
+                <div>{photoURLs[0].data[paramKeys[param]]}</div>
+                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[colors.length - 1].color})`}}></div>
+                <div>{photoURLs[photoURLs.length - 1].data[paramKeys[param]]}</div>
+            </div>
+            <div className='google-map'>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
                     defaultCenter={center}
