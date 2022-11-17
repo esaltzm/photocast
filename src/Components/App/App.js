@@ -1,6 +1,5 @@
 // TO DO
-// - Fix date/time
-// - Gradient of pin colors
+// - Gradient key
 // - style
 // - about page
 // - explain no exif data in about page, add link in noData counter => what does this mean?
@@ -32,6 +31,7 @@ export default function App() {
 		const getWeather = async (lat, long, date) => {
 			let weather
 			const url = `http://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
+			console.log(url)
 			const res = await axios.get(url)
 			weather = res.data['forecast']['forecastday'][0]['hour']
 			return weather
@@ -47,7 +47,7 @@ export default function App() {
 				const long = exif['tags']['GPSLongitude']
 				const millis = exif['tags']['DateTimeOriginal'] * 1000
 				const date = new Date(millis)
-				const formattedDate = getFormattedDate(date)
+				const formattedDate = getFormattedDate(date).replaceAll(' ','-')
 				let weather, data
 				lat && long && formattedDate ?
 					weather = await getWeather(lat, long, formattedDate) :
