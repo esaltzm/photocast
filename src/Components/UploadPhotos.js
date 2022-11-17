@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {Dropzone} from 'react-dropzone'
 
 export default function UploadPhotos({ setPhotoFiles }) {
     const navigate = useNavigate()
