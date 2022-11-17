@@ -30,7 +30,7 @@ export default function App() {
 	useEffect(() => {
 		const getWeather = async (lat, long, date) => {
 			let weather
-			const url = `api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
+			const url = `https://api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
 			console.log(url)
 			const res = await axios.get(url)
 			weather = res.data['forecast']['forecastday'][0]['hour']
