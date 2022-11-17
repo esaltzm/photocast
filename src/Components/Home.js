@@ -85,7 +85,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                     <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} setHoverPhoto={setHoverPhoto}/>
                 </div> :
                 <div className='home-before'>
-                    <img src='/default.jpg' alt='a stormy landscape' style={{ width: '60%' }} />
+                    <img src='default.jpg' alt='a stormy landscape' style={{ width: '60%' }} />
                     <div className='home-link-div'>{'to get started... '}
                         <Link className='home-link' to='/upload-photos'>upload some photos</Link>
                     </div>
