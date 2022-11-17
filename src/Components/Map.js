@@ -6,9 +6,9 @@ export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hov
     return (
         <div className='map'>
             <div className='key'>
-                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[0].color})`}}></div>
+                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[0].rgb})`}}></div>
                 <div>{photoURLs[0].data[paramKeys[param]]}</div>
-                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[colors.length - 1].color})`}}></div>
+                <div className='color' style={{height:'20px', width:'20px', backgroundColor:`rgb(${colors[colors.length - 1].rgb})`}}></div>
                 <div>{photoURLs[photoURLs.length - 1].data[paramKeys[param]]}</div>
             </div>
             <div className='google-map'>
