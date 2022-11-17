@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressBar from "@ramonak/react-progress-bar"
+import { Icon } from '@iconify/react'
 import Map from './Map'
 import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
@@ -34,9 +35,9 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
             const lightest = photoURLs[photoURLs.length - 1].data[paramKeys[param]]
             const darkest = photoURLs[0].data[paramKeys[param]]
             const diff = darkest - lightest
-            const newColors = [...photoURLs.map((photo,i) => {
-                const gScale = 220 - 220*Math.abs((photo.data[paramKeys[param]] - darkest)/diff)
-                const z = 1000-i
+            const newColors = [...photoURLs.map((photo, i) => {
+                const gScale = 220 - 220 * Math.abs((photo.data[paramKeys[param]] - darkest) / diff)
+                const z = 1000 - i
                 return {
                     rgb: [0, gScale, 0],
                     z: z
@@ -45,7 +46,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
             setColors(newColors)
         }
         sortPhotos(param, dir)
-        if(photoURLs.length) sortColors()
+        if (photoURLs.length) sortColors()
     }, [param, dir])
 
     useEffect(() => {
@@ -72,17 +73,39 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                 width={'33%'}
                                 margin={'0 auto'}
                             />}
-                        <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
-                            <option value='default' disabled>Choose a parameter!</option>
-                            {params.map(param => <option value={param} key={param}>{param}</option>)}
-                        </select>
-                        <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
-                            <option value='highest'>High to low</option>
-                            <option value='lowest'>Low to high</option>
-                        </select>
+                        <div className='menukey'>
+                            <div className='menu'>
+                                <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
+                                    <option value='default' disabled>Choose a parameter!</option>
+                                    {params.map(param => <option value={param} key={param}>{param}</option>)}
+                                </select>
+                                <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
+                                    <option value='highest'>High to low</option>
+                                    <option value='lowest'>Low to high</option>
+                                </select>
+                            </div>
+                            {colors.length &&
+                                <div className='key'>
+                                    Key: {param}
+                                    <div className='subkey'>
+                                        <div className='color' style={{ color: `rgb(${colors[0].rgb})` }}>
+                                            <Icon icon={'mdi:map-marker'} />
+                                        </div>
+                                        <div>{photoURLs[0].data[paramKeys[param]]}</div>
+                                    </div>
+                                    <div className='subkey'>
+                                        <div className='color' style={{ color: `rgb(${colors[colors.length - 1].rgb})` }}>
+                                            <Icon icon={'mdi:map-marker'} />
+                                        </div>
+                                        <div>{photoURLs[photoURLs.length - 1].data[paramKeys[param]]}</div>
+                                    </div>
+                                </div>}
+                        </div>
                     </div>
-                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} colors={colors} hoverPhoto={hoverPhoto} param={param} paramKeys={paramKeys}/>
-                    <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} setHoverPhoto={setHoverPhoto}/>
+                    <div className='content'>
+                        <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} colors={colors} hoverPhoto={hoverPhoto} param={param} paramKeys={paramKeys} />
+                        <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} setHoverPhoto={setHoverPhoto} />
+                    </div>
                 </div> :
                 <div className='home-before'>
                     <img src='default.jpg' alt='a stormy landscape' style={{ width: '60%' }} />

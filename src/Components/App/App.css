@@ -13,8 +13,8 @@ h1 {
 }
 
 .google-map {
-  width: 800px;
-  height: 400px;
+  width: 1000px;
+  height: 600px;
 }
 
 .pin {
@@ -56,12 +56,13 @@ select:hover {
 }
 
 .photos-container {
-  height: 180px;
-  width: 80%;
+  width: 120px;
+  height: 600px;
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .close-icon {
@@ -75,6 +76,9 @@ select:hover {
 
 .info-header {
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: -20px;
 }
 
 .home-before {
@@ -106,17 +110,44 @@ nav {
 .color {
   height: 20px;
   width: 20px;
+  margin-top: -5px;
+  font-size: 1.5rem;
 }
 
 .key {
   background-color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
+  width: 240px;
+  font-size: 12px;
 }
 
 .subkey {
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 90%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+}
+
+.menukey {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  gap: 20px;
 }

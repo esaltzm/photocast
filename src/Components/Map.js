@@ -5,17 +5,6 @@ import GoogleMapReact from 'google-map-react'
 export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hoverPhoto, param, paramKeys }) {
     return (
         <div className='map'>
-            {colors.length && <div className='key'>
-                Key: {Object.keys(paramKeys).filter(key => paramKeys[key] === param)[0]}
-                <div className='subkey'>
-                    <div className='color' style={{backgroundColor: `rgb(${colors[0].rgb})` }}></div>
-                    <div>{photoURLs[0].data[paramKeys[param]]}</div>
-                </div>
-                <div className='subkey'>
-                    <div className='color' style={{backgroundColor: `rgb(${colors[colors.length - 1].rgb})` }}></div>
-                    <div>{photoURLs[photoURLs.length - 1].data[paramKeys[param]]}</div>
-                </div>
-            </div>}
             <div className='google-map'>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
