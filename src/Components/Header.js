@@ -8,7 +8,6 @@ export default function Header() {
                 <h1>Photo<span id='cast'>Cast</span></h1>
                 <img src='/logo.png' style={{height: '100px' }} />
             </div>
-            <h4 style={{fontStyle:'italic', fontWeight:'normal'}}>Remember the moments behind your photos, rain or shine</h4>
             <nav>
                 <Link to='/'>Home</Link>
                 <div>⚡</div>
