@@ -1,11 +1,6 @@
 // TO DO
-// - Gradient key
-// - style
 // - about page
 // - explain no exif data in about page, add link in noData counter => what does this mean?
-// - add drag and drop for files
-// - prevent map pins from getting stuck on hover
-// - conditional styling of photos in photoinfobox based on dimensions
 // - update readme
 // - make information flow diagram
 
@@ -46,7 +41,7 @@ export default function App() {
 				const long = exif['tags']['GPSLongitude']
 				const millis = exif['tags']['DateTimeOriginal'] * 1000
 				const date = new Date(millis)
-				const formattedDate = getFormattedDate(date).replaceAll(' ','-')
+				const formattedDate = getFormattedDate(date).replaceAll(' ','-').replaceAll(/\:.*$/g,'')
 				let weather, data
 				lat && long && formattedDate ?
 					weather = await getWeather(lat, long, formattedDate) :

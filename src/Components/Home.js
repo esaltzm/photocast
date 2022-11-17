@@ -70,7 +70,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                 completed={photoURLs.length / (photoFiles.length - noData) * 100}
                                 customLabel={' '}
                                 bgColor={'forestgreen'}
-                                width={'200px'}
+                                width={'400px'}
                                 margin={'0 auto'}
                             />}
                         <div className='menukey'>
@@ -84,7 +84,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                     <option value='lowest'>Low to high</option>
                                 </select>
                             </div>
-                            {param !== 'millis' &&
+                            {param !== 'millis' && colors.length &&
                                 <div className='key'>
                                     Key: {param}
                                     <div className='subkey'>

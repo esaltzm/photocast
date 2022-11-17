@@ -165,3 +165,20 @@ nav {
   flex-direction: row-reverse;
   gap: 100px;
 }
+
+.about {
+  align-items: left;
+  justify-content: left;
+  list-style-type: none;
+  text-align: left;
+}
+
+.about-container {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.about-span {
+  font-weight: bold;
+  color: forestgreen;
+}
