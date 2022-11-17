@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react'
 
-export default function LocationPin({ photo, setPhotoInfo }) {
+export default function LocationPin({ photo, setPhotoInfo, color, z, size }) {
     const [isHovering, setIsHovering] = useState(false)
     return (
         <div>
@@ -13,7 +13,7 @@ export default function LocationPin({ photo, setPhotoInfo }) {
                     <img
                         onMouseLeave={() => { setIsHovering(!isHovering) }}
                         src={photo.url}
-                        style={{ height: '90px', border: 'solid rgb(18, 72, 18) 4px', borderRadius: '3px', zIndex: '2' }}
+                        style={{ position: 'relative', height: '90px', border: `solid rgb(${color}) 4px`, borderRadius: '3px', zIndex: '10000' }}
                         alt={'photo on' + photo.data.date}
                     />
                 </div> :
@@ -23,6 +23,7 @@ export default function LocationPin({ photo, setPhotoInfo }) {
                         className='pin-icon'
                         onClick={() => { setPhotoInfo(photo) }}
                         onMouseOver={() => { setIsHovering(!isHovering) }}
+                        style={{ position: 'relative', color: `rgb(${color})`, zIndex: `${z}`, fontSize:`${size}` }}
                     />
                 </div>
             }

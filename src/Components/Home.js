@@ -7,21 +7,22 @@ import PhotoInfoBox from './PhotoInfoBox'
 
 export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPhotoInfo, photoFiles }) {
     const [param, setParam] = useState('millis')
+    const [hoverPhoto, setHoverPhoto] = useState(false)
     const [dir, setDir] = useState('highest')
+    const [colors, setColors] = useState([])
     const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
-    const [progress, setProgress] = useState(0)
+    const paramKeys = {
+        'Altitude (ft)': 'alt',
+        'Temperature (f)': 'temp',
+        'Windchill (f)': 'windchill',
+        'Precipitation (in)': 'precip',
+        'Humidity (rh)': 'humidity',
+        'Wind gust speed (mph)': 'gust',
+        'Visibility (mi)': 'vis'
+    }
 
     useEffect(() => {
         const sortPhotos = (param, direction) => {
-            const paramKeys = {
-                'Altitude (ft)': 'alt',
-                'Temperature (f)': 'temp',
-                'Windchill (f)': 'windchill',
-                'Precipitation (in)': 'precip',
-                'Humidity (rh)': 'humidity',
-                'Wind gust speed (mph)': 'gust',
-                'Visibility (mi)': 'vis'
-            }
             const sortParam = paramKeys[param]
             let sortedPhotos
             direction === 'highest' ?
@@ -29,7 +30,22 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                 sortedPhotos = photoURLs.sort((a, b) => a.data[sortParam] - b.data[sortParam])
             setPhotoURLS([...sortedPhotos])
         }
+        const sortColors = () => {
+            const lightest = photoURLs[photoURLs.length - 1].data[paramKeys[param]]
+            const darkest = photoURLs[0].data[paramKeys[param]]
+            const diff = darkest - lightest
+            const newColors = [...photoURLs.map((photo,i) => {
+                const gScale = 220 - 220*Math.abs((photo.data[paramKeys[param]] - darkest)/diff)
+                const z = 1000-i
+                return {
+                    rgb: [0, gScale, 0],
+                    z: z
+                }
+            })]
+            setColors(newColors)
+        }
         sortPhotos(param, dir)
+        if(photoURLs.length) sortColors()
     }, [param, dir])
 
     useEffect(() => {
@@ -65,8 +81,8 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                             <option value='lowest'>Low to high</option>
                         </select>
                     </div>
-                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
-                    <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} />
+                    <Map center={{ lat: 38.74, lng: -106.41 }} zoom={8} photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} colors={colors} hoverPhoto={hoverPhoto}/>
+                    <PhotosContainer photoURLs={photoURLs} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} setHoverPhoto={setHoverPhoto}/>
                 </div> :
                 <div className='home-before'>
                     <img src='/default.jpg' alt='a stormy landscape' style={{ width: '60%' }} />

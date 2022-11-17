@@ -3,7 +3,6 @@ import { Icon } from '@iconify/react'
 import closeIcon from '@iconify/icons-mdi/close'
 
 export default function PhotoInfoBox({ photo, setPhotoInfo }) {
-    console.log(photo.data)
     return (
         <div className='modal-background'>
             <div className='photo-info'>
