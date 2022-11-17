@@ -36,10 +36,10 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
             const darkest = photoURLs[0].data[paramKeys[param]]
             const diff = darkest - lightest
             const newColors = [...photoURLs.map((photo, i) => {
-                const gScale = 220 - 220 * Math.abs((photo.data[paramKeys[param]] - darkest) / diff)
+                const rScale = 255 - 255 * Math.abs((photo.data[paramKeys[param]] - darkest) / diff)
                 const z = 1000 - i
                 return {
-                    rgb: [0, gScale, 0],
+                    rgb: [rScale, 0, 0],
                     z: z
                 }
             })]
@@ -70,7 +70,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                 completed={photoURLs.length / (photoFiles.length - noData) * 100}
                                 customLabel={' '}
                                 bgColor={'forestgreen'}
-                                width={'33%'}
+                                width={'200px'}
                                 margin={'0 auto'}
                             />}
                         <div className='menukey'>
@@ -84,7 +84,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                     <option value='lowest'>Low to high</option>
                                 </select>
                             </div>
-                            {colors.length &&
+                            {param != 'millis' &&
                                 <div className='key'>
                                     Key: {param}
                                     <div className='subkey'>
