@@ -84,7 +84,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                                     <option value='lowest'>Low to high</option>
                                 </select>
                             </div>
-                            {param != 'millis' &&
+                            {param !== 'millis' &&
                                 <div className='key'>
                                     Key: {param}
                                     <div className='subkey'>
