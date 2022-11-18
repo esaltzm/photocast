@@ -18,6 +18,8 @@ PhotoCast is an app that lets users upload their photos and see weather data fro
 #### After completion:
 ![component-heirarchy](public/AppComponents.jpg)
 ![demo-gif](src/loadingDemoCropped.gif)
+![demo-alt](public/demo1.png)
+![demo-temp](public/demo2.png)
 
 ## Additional Libraries Used
 * [Iconify](https://www.npmjs.com/package/iconify)
