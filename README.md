@@ -1,10 +1,11 @@
 ## Project Description 
-PhotoCast is an app that lets users upload their photos and see weather data from the time/place they took those photos. Users can select a weather parameter (ex. wind speed) and sort their photos by that parameter, as well as view where the photos were taken on a map. Additionally, map markers will be color coded to a gradient showing the value of that parameter at each marker. This project idea was inspired by my thru hike of the Colorado Trail this summer - I have a lot of photos and there was some crazy weather during the trip, and I did not keep a journal or anything! I would love to use this app on my own photos and make it available for other people to help remember their trips (hiking or otherwise).
+PhotoCast is an app that lets users upload their photos and see weather data from the time/place they took those photos. Users can select a weather parameter (ex. wind speed) and sort their photos by that parameter, as well as view where the photos were taken on a map. Additionally, map markers can be color coded to a gradient showing the value of that parameter at each marker. This project idea was inspired by my thru hike of the Colorado Trail this summer - I have a lot of photos and there was some crazy weather during the trip, and I did not keep a journal or anything! I would love to use this app on my own photos and make it available for other people to help remember their trips (hiking or otherwise).
 
 ## Project Links
 * [GitHub Repo](https://github.com/esaltzm/weather-photo-app)
 * [Deployed App](https://photocast.vercel.app/)
 * [Demo Recording](https://vimeo.com/772202365)
+* [Project Presentation](https://vimeo.com/772446231)
 
 
 ## Wireframes & React Component Hierarchy
@@ -41,8 +42,16 @@ PhotoCast is an app that lets users upload their photos and see weather data fro
 #### Future Features
 * ☐ Implement drop zone for draggable file upload 
 * ☐ Dynamically ender center and zoom of Google Maps component based on location pins present (right now they are default values)
+* ☐ Find a different historical weather API that goes back further than one year and is not limited by a free trial
 
-## Code Snippets
+## Issues and Resolutions
+
+#### Sorting photos via dropdown options menu
+
+I was kind of at a loss about how to implement this, but ended up changing the photoURLs state from an array of URLs to an array of objects, one key containing the url, and one key containing all the metadata and weather information. That way, each time the user sorts, the setPhotoURLs function can be called to replace the array with a new array sorted by that parameter
+
+
+## Code Snippet
 
 #### Gradient RBG Value Generator
 
