@@ -1,9 +1,3 @@
-// TO DO
-// - about page
-// - explain no exif data in about page, add link in noData counter => what does this mean?
-// - update readme
-// - make information flow diagram
-
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
