@@ -37,4 +37,3 @@ export default function PhotoInfoBox({ photo, setPhotoInfo }) {
         </div>
     )
 }
-//            {photoInfo && <PhotoInfoBox photo={photoInfo}/>}
