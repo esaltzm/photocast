@@ -5,8 +5,6 @@ PhotoCast is an app that lets users upload their photos and see weather data fro
 * [GitHub Repo](https://github.com/esaltzm/weather-photo-app)
 * [Deployed App](https://photocast.vercel.app/)
 * [Demo Recording](https://vimeo.com/772202365)
-* [Project Presentation](https://vimeo.com/772446231)
-
 
 ## Wireframes & React Component Hierarchy
 
