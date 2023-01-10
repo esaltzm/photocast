@@ -11,15 +11,13 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     const [hoverPhoto, setHoverPhoto] = useState(false)
     const [dir, setDir] = useState('highest')
     const [colors, setColors] = useState([])
-    const params = ['Altitude (ft)', 'Temperature (f)', 'Windchill (f)', 'Precipitation (in)', 'Humidity (rh)', 'Wind gust speed (mph)', 'Visibility (mi)']
     const paramKeys = {
         'Altitude (ft)': 'alt',
-        'Temperature (f)': 'temp',
-        'Windchill (f)': 'windchill',
-        'Precipitation (in)': 'precip',
-        'Humidity (rh)': 'humidity',
-        'Wind gust speed (mph)': 'gust',
-        'Visibility (mi)': 'vis'
+        'Temperature (C)': 'temp',
+        'Precipitation (mm/h)': 'precip',
+        'Wind gust speed (m/s)': 'gust',
+        'Snow Depth (m)': 'sde',
+        'Lightning': 'ltng'
     }
 
     useEffect(() => {
@@ -77,7 +75,7 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
                             <div className='menu'>
                                 <select className='select' defaultValue={'default'} onChange={(e) => { setParam(e.target.value) }}>
                                     <option value='default' disabled>Choose a parameter!</option>
-                                    {params.map(param => <option value={param} key={param}>{param}</option>)}
+                                    {Object.keys(paramKeys).map(param => <option value={param} key={param}>{param}</option>)}
                                 </select>
                                 <select className='select' defaultValue={'highest'} onChange={(e) => { setDir(e.target.value) }}>
                                     <option value='highest'>High to low</option>
