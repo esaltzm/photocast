@@ -21,7 +21,7 @@ export default function App() {
 			let weather
 			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
-			console.log(res)
+			console.log(url, res)
 			return res.data
 		}
 
@@ -41,7 +41,6 @@ export default function App() {
 					weather = await getWeather(unixTime, lat, long) :
 					setNoData(noData => noData + 1)
 				if (weather) {
-					weather = weather[0]
 					data = {
 						unixTime: unixTime,
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
