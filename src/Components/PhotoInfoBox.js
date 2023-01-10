@@ -5,13 +5,14 @@ import closeIcon from '@iconify/icons-mdi/close'
 export default function PhotoInfoBox({ photo, setPhotoInfo }) {
     const [displayStyle, setDisplayStyle] = useState({})
     useEffect(() => {
+        console.log(photo.data)
         var img = new Image()
         img.onload = function () {
             const height = img.height
             const width = img.width
-            height < width ? 
-            setDisplayStyle({width: '50%'}) :
-            setDisplayStyle({width: '38%'})
+            height < width ?
+                setDisplayStyle({ width: '50%' }) :
+                setDisplayStyle({ width: '38%' })
         }
         img.src = photo.url
     }, [photo])
@@ -27,11 +28,10 @@ export default function PhotoInfoBox({ photo, setPhotoInfo }) {
                     long: {photo.data.long}<br /><br />
                     altitude: {photo.data.alt}<br />
                     temp: {photo.data.temp}<br />
-                    windchill: {photo.data.windchill}<br />
                     precipitation: {photo.data.precip}<br />
-                    humidity: {photo.data.humidity}<br />
                     wind gust speed: {photo.data.gust}<br />
-                    visibility: {photo.data.vis}<br />
+                    snow depth: {photo.data.sde}<br />
+                    lightning: {photo.data.ltng ? 'yes' : 'no'}
                 </div>
             </div>
         </div>

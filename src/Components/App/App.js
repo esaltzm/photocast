@@ -21,6 +21,7 @@ export default function App() {
 			let weather
 			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
+			console.log(res)
 			return res.data
 		}
 
@@ -34,12 +35,13 @@ export default function App() {
 				const long = exif['tags']['GPSLongitude']
 				const unixTime = exif['tags']['DateTimeOriginal']
 				const date = new Date(unixTime * 1000)
-				const formattedDate = getFormattedDate(date).replaceAll(' ','-').replaceAll(/\:.*$/g,'')
+				const formattedDate = getFormattedDate(date).replaceAll(' ', '-').replaceAll(/\:.*$/g, '')
 				let weather, data
 				lat && long && formattedDate ?
 					weather = await getWeather(unixTime, lat, long) :
 					setNoData(noData => noData + 1)
 				if (weather) {
+					weather = weather[0]
 					data = {
 						unixTime: unixTime,
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
@@ -53,8 +55,9 @@ export default function App() {
 						sde: weather['sde'],
 						ltng: weather['ltng']
 					}
+					console.log('photo data: ', data)
 				}
-				if (data) setPhotoURLS(photoURLs => [...photoURLs,{
+				if (data) setPhotoURLS(photoURLs => [...photoURLs, {
 					url: url,
 					data: data
 				}])
