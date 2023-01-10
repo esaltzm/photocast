@@ -3,7 +3,6 @@ import LocationPin from './LocationPin'
 import GoogleMapReact from 'google-map-react'
 
 export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hoverPhoto }) {
-    console.log(process.env.REACT_APP_GOOGLE_KEY)
     return (
         <div className='map'>
             <div className='google-map'>

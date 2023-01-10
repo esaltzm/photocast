@@ -17,12 +17,11 @@ export default function App() {
 	const [photoInfo, setPhotoInfo] = useState(false)
 
 	useEffect(() => {
-		const getWeather = async (lat, long, date) => {
+		const getWeather = async (time, lat, long) => {
 			let weather
-			const url = `//api.weatherapi.com/v1/history.json?key=e4ce4b302ac14356b0f162359221011&q=${lat},${long}&dt=${date}`
+			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
-			weather = res.data['forecast']['forecastday'][0]['hour']
-			return weather
+			return res.data
 		}
 
 		if (!photoFiles || !photoFiles.length) return
@@ -33,29 +32,26 @@ export default function App() {
 				const exif = await getEXIF(url)
 				const lat = exif['tags']['GPSLatitude']
 				const long = exif['tags']['GPSLongitude']
-				const millis = exif['tags']['DateTimeOriginal'] * 1000
-				const date = new Date(millis)
+				const unixTime = exif['tags']['DateTimeOriginal']
+				const date = new Date(unixTime * 1000)
 				const formattedDate = getFormattedDate(date).replaceAll(' ','-').replaceAll(/\:.*$/g,'')
 				let weather, data
 				lat && long && formattedDate ?
-					weather = await getWeather(lat, long, formattedDate) :
+					weather = await getWeather(unixTime, lat, long) :
 					setNoData(noData => noData + 1)
 				if (weather) {
-					const index = parseInt(date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }).slice(0, 2))
-					const weatherHour = weather[index]
 					data = {
-						millis: millis,
+						unixTime: unixTime,
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
 						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
 						lat: lat,
 						long: long,
 						alt: Math.floor(exif['tags']['GPSAltitude'] * 3.28084),
-						temp: weatherHour['temp_f'],
-						windchill: weatherHour['windchill_f'],
-						precip: weatherHour['precip_in'],
-						humidity: weatherHour['humidity'],
-						gust: weatherHour['gust_mph'],
-						vis: weatherHour['vis_miles']
+						temp: weather['t'],
+						precip: weather['prate'],
+						gust: weather['gust'],
+						sde: weather['sde'],
+						ltng: weather['ltng']
 					}
 				}
 				if (data) setPhotoURLS(photoURLs => [...photoURLs,{
