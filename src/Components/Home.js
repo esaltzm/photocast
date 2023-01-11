@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressBar from "@ramonak/react-progress-bar"
 import { Icon } from '@iconify/react'
-import turf from 'turf'
 import Map from './Map'
 import PhotosContainer from './PhotosContainer'
 import PhotoInfoBox from './PhotoInfoBox'
@@ -12,7 +11,6 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
     const [hoverPhoto, setHoverPhoto] = useState(false)
     const [dir, setDir] = useState('highest')
     const [colors, setColors] = useState([])
-    const [points, setPoints] = useState(null)
     const paramKeys = {
         'Altitude (ft)': 'alt',
         'Temperature (C)': 'temp',
@@ -54,9 +52,6 @@ export default function Home({ photoURLs, setPhotoURLS, noData, photoInfo, setPh
         const sortPhotos = () => {
             sortedPhotos = photoURLs.sort((a, b) => a.data.millis - b.data.millis)
             setPhotoURLS([...sortedPhotos])
-            setPoints(turf.points(photoURLs.map(photo => [photo.data.lat, photo.data.long])))
-            console.log('points: ', points)
-            console.log('center: ', turf.center(points))
         }
         sortPhotos()
     }, [photoURLs.length])
