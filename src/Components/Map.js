@@ -10,7 +10,7 @@ export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hov
                     bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_KEY }}
                     defaultCenter={center}
                     defaultZoom={zoom}
-                    options={function (maps) { return { mapTypeId: "terrain" } }}
+                    options={{ mapTypeId: "terrain" }}
                 >
                     {photoURLs.map((photo, i) => {
                         let size, color, z
@@ -27,8 +27,7 @@ export default function Map({ center, zoom, photoURLs, setPhotoInfo, colors, hov
                                 color = '18, 72, 18'
                             }
                         }
-                        return photo.data.lat && photo.data.long ?
-                            <LocationPin lat={photo.data.lat} lng={photo.data.long} photo={photo} setPhotoInfo={setPhotoInfo} key={photo.url} color={color} z={z} size={size} /> : <></>
+                        return <LocationPin lat={photo.data.lat} lng={photo.data.long} photo={photo} setPhotoInfo={setPhotoInfo} key={photo.url} color={color} z={z} size={size} />
                     })}
                 </GoogleMapReact>
             </div>
