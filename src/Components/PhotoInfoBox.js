@@ -5,7 +5,6 @@ import closeIcon from '@iconify/icons-mdi/close'
 export default function PhotoInfoBox({ photo, setPhotoInfo }) {
     const [displayStyle, setDisplayStyle] = useState({})
     useEffect(() => {
-        console.log(photo.data)
         var img = new Image()
         img.onload = function () {
             const height = img.height

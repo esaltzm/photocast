@@ -24,7 +24,6 @@ export default function App() {
 		const getWeather = async (time, lat, long) => {
 			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
-			console.log(url, res)
 			return res.data
 		}
 
@@ -75,8 +74,6 @@ export default function App() {
 						sde: weather['sde'],
 						ltng: weather['ltng']
 					}
-					console.log('photo data: ', data)
-					console.log(photo)
 					let url = URL.createObjectURL(photo)
 					if (photo.type === 'image/heic') {
 						url = await convertPhoto(url)
