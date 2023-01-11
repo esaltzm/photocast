@@ -2,6 +2,7 @@ import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import exifr from 'exifr'
+import heic2any from 'heic2any'
 import tzlookup from 'tz-lookup'
 import axios from 'axios'
 import Header from '../Header'
@@ -24,6 +25,21 @@ export default function App() {
 			return res.data
 		}
 
+		const blobToBase64 = async (blob) => {
+			return new Promise((resolve, _) => {
+				const reader = new FileReader()
+				reader.onloadend = () => resolve(reader.result)
+				reader.readAsDataURL(blob)
+			})
+		}
+
+		const convertPhoto = async (url) => {
+			const res = await fetch(url)
+			const blob = await res.blob()
+			const convertedBlob = await heic2any({ blob })
+			return await blobToBase64(convertedBlob)
+		}
+
 		if (!photoFiles.length) return
 
 		const getDataURLs = async () => {
@@ -33,9 +49,7 @@ export default function App() {
 			}
 
 			for (const photo of photoFiles) {
-				const url = URL.createObjectURL(photo)
 				const exif = await exifr.parse(photo)
-				console.log(exif)
 				const lat = getDecimalDegrees(exif['GPSLatitude'])
 				const long = getDecimalDegrees(exif['GPSLongitude']) * -1
 				const date = new Date(exif['DateTimeOriginal'])
@@ -57,6 +71,13 @@ export default function App() {
 						ltng: weather['ltng']
 					}
 					console.log('photo data: ', data)
+					console.log(photo)
+					let url = URL.createObjectURL(photo)
+					if (photo.type === 'image/heic') {
+						console.log('converting photo')
+						url = await convertPhoto(url)
+						console.log('done w photo')
+					}
 					setPhotoURLS(photoURLs => [...photoURLs, {
 						url: url,
 						data: data
