@@ -5,6 +5,8 @@ import exifr from 'exifr'
 import heic2any from 'heic2any'
 import tzlookup from 'tz-lookup'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Header from '../Header'
 import Home from '../Home'
 import About from '../About'
@@ -18,6 +20,7 @@ export default function App() {
 	const [photoInfo, setPhotoInfo] = useState(false)
 
 	useEffect(() => {
+
 		const getWeather = async (time, lat, long) => {
 			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
@@ -41,6 +44,8 @@ export default function App() {
 		}
 
 		if (!photoFiles.length) return
+
+		if (photoFiles[0].type === 'image/heic') toast.warning('You have uploaded an HEIC image, these may take longer to process.')
 
 		const getDataURLs = async () => {
 
@@ -74,9 +79,7 @@ export default function App() {
 					console.log(photo)
 					let url = URL.createObjectURL(photo)
 					if (photo.type === 'image/heic') {
-						console.log('converting photo')
 						url = await convertPhoto(url)
-						console.log('done w photo')
 					}
 					setPhotoURLS(photoURLs => [...photoURLs, {
 						url: url,
@@ -88,25 +91,11 @@ export default function App() {
 		getDataURLs()
 	}, [photoFiles])
 
-	// const getFormattedDate = (date) => {
-	// 	const year = date.getFullYear()
-	// 	let month = (1 + date.getMonth()).toString()
-	// 	month = month.length > 1 ? month : '0' + month
-	// 	let day = date.getDate().toString()
-	// 	day = day.length > 1 ? day : '0' + day
-	// 	return year + ' ' + month + ' ' + day
-	// }
-
-	// const getEXIF = async (url) => {
-	// 	const res = await fetch(url)
-	// 	const blob = await res.blob()
-	// 	const ab = await blob.arrayBuffer()
-	// 	const parser = exifParser.create(ab)
-	// 	return parser.parse()
-	// }
-
 	return (
 		<div className='App'>
+			<ToastContainer
+				autoClose={5000}
+			/>
 			<Header />
 			<Routes>
 				<Route path='/' element={<Home photoURLs={photoURLs} setPhotoURLS={setPhotoURLS} noData={noData} photoInfo={photoInfo} setPhotoInfo={setPhotoInfo} photoFiles={photoFiles} />} />
