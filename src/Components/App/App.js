@@ -29,11 +29,7 @@ export default function App() {
 		const getDataURLs = async () => {
 
 			const getDecimalDegrees = (arr) => {
-				if (arr) {
-					return arr[0] + arr[1] / 60 + arr[2] / 3600
-				} else {
-					setNoData(noData + 1)
-				}
+				return arr ? arr[0] + arr[1] / 60 + arr[2] / 3600 : setNoData(noData + 1)
 			}
 
 			for (const photo of photoFiles) {
