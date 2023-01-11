@@ -1,7 +1,7 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import exifParser from 'exif-parser'
+import exifr from 'exifr'
 import tzlookup from 'tz-lookup'
 import axios from 'axios'
 import Header from '../Header'
@@ -18,36 +18,42 @@ export default function App() {
 
 	useEffect(() => {
 		const getWeather = async (time, lat, long) => {
-			let weather
 			const url = `https://skyscan-backend.herokuapp.com/photocast/${time}/${lat}/${long}`
 			const res = await axios.get(url)
 			console.log(url, res)
 			return res.data
 		}
 
-		if (!photoFiles || !photoFiles.length) return
-		const newPhotoURLs = []
+		if (!photoFiles.length) return
+
 		const getDataURLs = async () => {
+
+			const getDecimalDegrees = (arr) => {
+				if (arr) {
+					return arr[0] + arr[1] / 60 + arr[2] / 3600
+				} else {
+					setNoData(noData + 1)
+				}
+			}
+
 			for (const photo of photoFiles) {
 				const url = URL.createObjectURL(photo)
-				const exif = await getEXIF(url)
-				const lat = exif['tags']['GPSLatitude']
-				const long = exif['tags']['GPSLongitude']
-				const unixTime = exif['tags']['DateTimeOriginal']
-				const date = new Date(unixTime * 1000)
-				const formattedDate = getFormattedDate(date).replaceAll(' ', '-').replaceAll(/\:.*$/g, '')
-				let weather, data
-				lat && long && formattedDate ?
-					weather = await getWeather(unixTime, lat, long) :
-					setNoData(noData => noData + 1)
-				if (weather) {
-					data = {
+				const exif = await exifr.parse(photo)
+				console.log(exif)
+				const lat = getDecimalDegrees(exif['GPSLatitude'])
+				const long = getDecimalDegrees(exif['GPSLongitude']) * -1
+				const date = new Date(exif['DateTimeOriginal'])
+				const unixTime = date.getTime() / 1000
+				// const formattedDate = getFormattedDate(date).replaceAll(' ', '-').replaceAll(/\:.*$/g, '')
+				if (lat && long) {
+					const weather = await getWeather(unixTime, lat, long)
+					const data = {
 						unixTime: unixTime,
 						date: date.toLocaleDateString('en-US', { timezone: tzlookup(lat, long) }),
 						time: date.toLocaleTimeString('en-US', { timezone: tzlookup(lat, long) }),
 						lat: lat,
 						long: long,
-						alt: Math.floor(exif['tags']['GPSAltitude'] * 3.28084),
+						alt: Math.floor(exif['GPSAltitude'] * 3.28084),
 						temp: weather['t'],
 						precip: weather['prate'],
 						gust: weather['gust'],
@@ -55,32 +61,32 @@ export default function App() {
 						ltng: weather['ltng']
 					}
 					console.log('photo data: ', data)
+					setPhotoURLS(photoURLs => [...photoURLs, {
+						url: url,
+						data: data
+					}])
 				}
-				if (data) setPhotoURLS(photoURLs => [...photoURLs, {
-					url: url,
-					data: data
-				}])
 			}
 		}
 		getDataURLs()
 	}, [photoFiles])
 
-	const getFormattedDate = (date) => {
-		const year = date.getFullYear()
-		let month = (1 + date.getMonth()).toString()
-		month = month.length > 1 ? month : '0' + month
-		let day = date.getDate().toString()
-		day = day.length > 1 ? day : '0' + day
-		return year + ' ' + month + ' ' + day
-	}
+	// const getFormattedDate = (date) => {
+	// 	const year = date.getFullYear()
+	// 	let month = (1 + date.getMonth()).toString()
+	// 	month = month.length > 1 ? month : '0' + month
+	// 	let day = date.getDate().toString()
+	// 	day = day.length > 1 ? day : '0' + day
+	// 	return year + ' ' + month + ' ' + day
+	// }
 
-	const getEXIF = async (url) => {
-		const res = await fetch(url)
-		const blob = await res.blob()
-		const ab = await blob.arrayBuffer()
-		const parser = exifParser.create(ab)
-		return parser.parse()
-	}
+	// const getEXIF = async (url) => {
+	// 	const res = await fetch(url)
+	// 	const blob = await res.blob()
+	// 	const ab = await blob.arrayBuffer()
+	// 	const parser = exifParser.create(ab)
+	// 	return parser.parse()
+	// }
 
 	return (
 		<div className='App'>
